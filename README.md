@@ -17,7 +17,9 @@ There are a large number of series and you cannot watch them all. The site makes
 
 ## User Stories
 - Type of users: Admin, User , and Visitors.
-
+- Admin: The Admin can do everything on the website add the series or edit it or delete it and the same with the user and review .
+- User: The user can see the series on the website, read the people's reviews, add reviews, edit or delete the review, and add suggestions.
+-  Visitors: The Visitors only can View the series.
 ### Admin
 
 - Create, Read, Update, Delete Series.
