@@ -11,32 +11,20 @@ There are a large number of series and you cannot watch them all. The site makes
 
 - Manage the series.
 - Manage the visitors.
-- Manage the publisher
 - Manage the review
 - Manage the suggestions
 
 
 ## User Stories
-- Type of users: Admin, Publisher, User , and Visitors.
+- Type of users: Admin, User , and Visitors.
 
 ### Admin
 
 - Create, Read, Update, Delete Series.
-- Create, Read, Update, Delete Publisher.
 - Create, Read, Update, Delete User.
 - Create, Read, Update, Delete Review.
 - Create, Read, Update, Delete Suggestions.
 
-
-### Publisher
-
-- View series.
-- Create series.
-- Update and Delete series.
-- View Reviews.
-- Delete Reviews.
-- View Suggestions.
-- Delete Suggestions.
 
 ### Visitors
 
@@ -45,8 +33,7 @@ There are a large number of series and you cannot watch them all. The site makes
 ### User
 
 - View series.
-- Add Reviews.
-- Delete his Reviews.
+- Create, Read, Update, Delete Review.
 - Add Suggestions.
 
 
