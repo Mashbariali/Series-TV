@@ -11,10 +11,10 @@ urlpatterns = [
     path("list/review", views.list_review, name="list_review"),
     path("list/suggestions", views.list_suggestions, name="list_suggestions"),
     path("update/series/<series_id>", views.update_series, name="update_series"),
-    path("update/review/<review_id>", views.update_review, name="update_review"),
-    path("update/suggestions/<suggestions_id>", views.update_suggestions, name="update_suggestions"),
-    path("delete/series/<series_id>/", views.delete_series, name="delete_series"),
-    path("delete/review/<review_id>/", views.delete_review, name="delete_review"),
-    path("delete/suggestions/<suggestions_id>/", views.delete_suggestions, name="delete_suggestions"),
+    path("delete/series/<series_id>", views.delete_series, name="delete_series"),
+    path("delete/review/<review_id>", views.delete_review, name="delete_review"),
+    path("delete/suggestions/<suggestions_id>", views.delete_suggestions, name="delete_suggestions"),
+    path("search/<title>", views.search_series, name="search_student"),
+    path("top", views.top_5, name="top_5"),
 
 ]

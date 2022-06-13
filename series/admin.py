@@ -1,3 +1,25 @@
+from .models import Series
 from django.contrib import admin
+from django.contrib import messages
 
-# Register your models here.
+
+
+class SeriesAdmin(admin.ModelAdmin):
+    list_display = ('title', 'rating')
+
+    def active(self, obj):
+           return obj.is_active == 1
+
+
+
+    def has_delete_permission(self, request, obj=None):
+        return False
+
+    def has_add_permission(self, request):
+        return False
+
+admin.site.register(Series, SeriesAdmin)
+
+
+
+

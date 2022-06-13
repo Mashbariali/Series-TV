@@ -10,17 +10,13 @@ from rest_framework.decorators import permission_classes
 from rest_framework.permissions import IsAdminUser
 
 
-# Create your views here.
-
-
-
 
 @api_view(['POST'])
 @authentication_classes([JWTAuthentication])
 @permission_classes([IsAdminUser])
 def add_series(request: Request):
     '''
-    To add Series
+    To add a Series for those who have Authentication and Admin User
     '''
     if not request.user.is_authenticated or not request.user.has_perm('series.add_Series'):
         return Response({"msg": "Not Allowed"}, status=status.HTTP_401_UNAUTHORIZED)
@@ -45,7 +41,7 @@ def add_series(request: Request):
 @authentication_classes([JWTAuthentication])
 def add_review(request: Request):
     '''
-    To add Review
+    To add a Review for those who have Authentication
     '''
     if not request.user.is_authenticated:
         return Response({"msg": "Not Allowed"}, status=status.HTTP_401_UNAUTHORIZED)
@@ -68,7 +64,7 @@ def add_review(request: Request):
 @authentication_classes([JWTAuthentication])
 def add_suggestions(request: Request):
     '''
-       To add Suggestions
+         To add a Suggestions for those who have Authentication
        '''
     if not request.user.is_authenticated:
         return Response({"msg": "Not Allowed"}, status=status.HTTP_401_UNAUTHORIZED)
@@ -121,7 +117,7 @@ def list_review(request: Request):
 @authentication_classes([JWTAuthentication])
 def list_suggestions(request: Request):
     '''
-              To list Suggestions
+       To list a Suggestions for those who have Authentication
               '''
     if not request.user.is_authenticated:
         return Response({"msg": "Not Allowed"}, status=status.HTTP_401_UNAUTHORIZED)
@@ -141,9 +137,9 @@ def list_suggestions(request: Request):
 @permission_classes([IsAdminUser])
 def update_series(request: Request, series_id):
     '''
-              To update Series
+              To update Series for those who have Authentication and Admin User
               '''
-    if not request.user.is_authenticated or not request.user.has_perm('series.add_Series'):
+    if not request.user.is_authenticated or not request.user.has_perm('series.update_Series'):
         return Response({"msg": "Not Allowed"}, status=status.HTTP_401_UNAUTHORIZED)
     request.data.update(user=request.user.id)
 
@@ -162,62 +158,14 @@ def update_series(request: Request, series_id):
         return Response({"msg": "bad request, cannot update"}, status=status.HTTP_400_BAD_REQUEST)
 
 
-@api_view(['PUT'])
-@authentication_classes([JWTAuthentication])
-def update_review(request: Request, review_id):
-    '''
-              To update Review
-              '''
-    if not request.user.is_authenticated:
-        return Response({"msg": "Not Allowed"}, status=status.HTTP_401_UNAUTHORIZED)
-
-    review = Review.objects.get(id=review_id)
-
-    updated_review = ReviewSerializer(instance=review, data=request.data)
-    if updated_review.is_valid():
-        updated_review.save()
-        data = {
-            "msg": "updated successfully"
-        }
-
-        return Response(data)
-    else:
-        print(updated_review.errors)
-        return Response({"msg": "bad request, cannot update"}, status=status.HTTP_400_BAD_REQUEST)
-
-
-@api_view(['PUT'])
-@authentication_classes([JWTAuthentication])
-def update_suggestions(request: Request, suggestions_id):
-    '''
-              To update Suggestions
-              '''
-    if not request.user.is_authenticated:
-        return Response({"msg": "Not Allowed"}, status=status.HTTP_401_UNAUTHORIZED)
-
-    suggestions = Suggestions.objects.get(id=suggestions_id)
-
-    updated_suggestions = SuggestionsSerializer(instance=suggestions, data=request.data)
-    if updated_suggestions.is_valid():
-        updated_suggestions.save()
-        data = {
-            "msg": "updated successfully"
-        }
-
-        return Response(data)
-    else:
-        print(updated_suggestions.errors)
-        return Response({"msg": "bad request, cannot update"}, status=status.HTTP_400_BAD_REQUEST)
-
-
 @api_view(['DELETE'])
 @authentication_classes([JWTAuthentication])
 @permission_classes([IsAdminUser])
 def delete_series(request: Request, series_id):
     '''
-              To delete Series
+              To delete Series for those who have Authentication and Admin User
               '''
-    if not request.user.is_authenticated or not request.user.has_perm('series.add_Series'):
+    if not request.user.is_authenticated or not request.user.has_perm('series.delete_Series'):
         return Response({"msg": "Not Allowed"}, status=status.HTTP_401_UNAUTHORIZED)
     request.data.update(user=request.user.id)
 
@@ -230,7 +178,7 @@ def delete_series(request: Request, series_id):
 @authentication_classes([JWTAuthentication])
 def delete_review(request: Request, review_id):
     '''
-              To delete Review
+              To delete Review for those who have Authentication
               '''
     if not request.user.is_authenticated:
         return Response({"msg": "Not Allowed"}, status=status.HTTP_401_UNAUTHORIZED)
@@ -244,7 +192,7 @@ def delete_review(request: Request, review_id):
 @authentication_classes([JWTAuthentication])
 def delete_suggestions(request: Request, suggestions_id):
     '''
-              To delete Suggestions
+              To delete Suggestions for those who have Authentication
               '''
     if not request.user.is_authenticated:
         return Response({"msg": "Not Allowed"}, status=status.HTTP_401_UNAUTHORIZED)
@@ -252,3 +200,34 @@ def delete_suggestions(request: Request, suggestions_id):
     suggestions = Suggestions.objects.get(id=suggestions_id)
     suggestions.delete()
     return Response({"msg": "Deleted Successfully"})
+
+
+
+
+
+@api_view(['GET'])
+def search_series(request: Request,title):
+    '''
+    To Search for Series
+    '''
+    series = Series.objects.filter(title=title)
+
+    data={
+        "msg" : "The Series is :",
+        "Series": SeriesSerializer(instance=series, many=True).data
+    }
+    return Response(data)
+
+@api_view(['GET'])
+def top_5(request: Request):
+    '''
+    To List The Top Five Series
+    '''
+    series = Series.objects.filter().order_by('-rating')[:5]
+
+    data = {
+        "msg": "The Top 5 are :",
+        "students": SeriesSerializer(instance=series, many=True).data
+    }
+    return Response(data)
+
